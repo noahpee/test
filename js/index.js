@@ -110,7 +110,7 @@ function loadGrid(id, check) {
         current = id
         array = data[id].array
         title.value = ""
-        if (wordPosition == utterance.length && nextWord == targetArray[wordPosition]) {
+        if (wordPosition == utterance.length && nextWord == targetArray[wordPosition] && inFolder == true) {
             let gridArray = array.slice(0, (user.rows*user.columns))
             let index = gridArray.indexOf(nextWord)
             if (index == -1) {
@@ -306,7 +306,6 @@ function searchKeyUp() {
 function orderCheck(array, current, id) {
 
     let index = array.indexOf(parseInt(id))
-
 
     if (index == -1) {
         data[current].array.unshift(parseInt(id)) 
