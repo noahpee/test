@@ -61,6 +61,7 @@ function loadSettings() {
         user.name = prompt("what is your name?")
         let userString = JSON.stringify(user)
         localStorage.setItem("user", userString)
+        data.words[549].text = user.name
         loadData()
         loadSettings()
     }
@@ -116,6 +117,7 @@ function loadGrid(id, check) {
             if (index == -1) {
                 array.splice(random, 0, nextWord)
                 ran = true
+                console.log("spliced")
             } 
         }
     }
@@ -217,11 +219,11 @@ function sentenceAdd(id, check, array, current) {
         orderCheck(array, current, id)
         loadGrid(id)
     }
-
 }
 
 function speak() {
 
+    console.log(sentenceArray)
     const voices = window.speechSynthesis.getVoices();
     let message = utterance.join(" ")
     const lastVoice = voices[user.voice];
@@ -346,7 +348,7 @@ function wordCheck(id) {
         if (typeof targetArray == "undefined") {
             leaveFolder()
             loadGrid[data[folder.array], -1]
-            return
+            return alert("nice! why not try the very hungry caterpillar next?")
         } else {
             targetArray = targetObject[sentenceNumber]
             nextWord = targetArray[wordPosition]
