@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Test</title>
+</head>
+<body>
+<header>
+    <div class="menu-dropdown">
+        <p class="menu-burger" onclick="menuOpen()">☰</p>
+        <div class="menu-content" id="menu-content">
+            <p class="menu-text">homepage</p>
+            <p class="menu-text">about us</p>
+        </div>
+    </div>
+    <input type="text" name="search" class="search-input" id="search-input" placeholder="speak-easy" onkeyup="searchKeyUp()">
+    <div class="account-div" >
+        <div class="account-dropdown">
+            <div class="notification"></div>
+            <img src="assets/accounts.png" class="account-image" alt="account-icon" onclick="accountOpen()">
+            <div class="account-content" id="account-content">
+                <details>
+                    <summary> user</summary>
+                    <p id="userName">username:</p>
+                    <p id="homePage">home layout: </p>
+                    <div class="input-div">
+                        <label>voice :</label>
+                        <select id="voiceSelect" class="voice-input" onchange="voiceChange()"></select>
+                    </div>           
+                    </details>
+                <details class="set-div">
+                    <summary> grid settings</summary>
+                    <div class="input-div">
+                        <label for="rows">rows :</label>
+                        <input type="number" name="rows" class="select" min="1" max="10" id="rows-select" onchange="changeDisplay()">
+                    </div>
+                    <div class="input-div">
+                        <label for="columns">columns :</label>
+                        <input type="number" name="columns" class="select" min="1" max="10" id="columns-select" onchange="changeDisplay()">
+                    </div>
+                    <button class="account-button" onclick="lockGrid()" id="lock-button">lock grid</button>                
+                </details>
+                <details class="set-div">
+                    <summary> save</summary>
+                    <button onclick="save()" class="account-button">save</button>
+                </details>
+            </div>
+        </div>    
+    </div>
+</header>
+<main>
+    <div class="example-box">
+        <button id="move-down" class="move-button" onclick="move()"><<</button>
+        <div class="example-container" id="example-container"></div>
+        <button id="move-up" class="move-button" onclick="move()">>></button>
+    </div>
+    <div class="sentence-container">
+        <button onclick="back()" class="sentence-button">back</button>
+        <div onclick="speak()" class="sentence-display" id="sentence-display"></div>
+        <button onclick="clearAll()" class="sentence-button">clear</button>
+    </div>
+    <div class="grid-container">
+        <div class="tiles-grid" id="tiles-grid"></div>
+    </div>
+</main>
+<img src="https://firebasestorage.googleapis.com/v0/b/speak-easy-6666f.appspot.com/o/stuff%2Flock.png?alt=media&token=97e96697-b7f7-4e83-ab21-4705b37db43e" alt="lock" class="lock" id="lock">
+<footer>
+    <p id="bottom-text"> © filler in manilla</p>
+</footer>
+</body>
+<script src="js/database.js"></script>
+<script src="js/index.js"></script>
+</html>
