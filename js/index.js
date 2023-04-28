@@ -117,7 +117,6 @@ function loadGrid(id, check) {
             if (index == -1) {
                 array.splice(random, 0, nextWord)
                 ran = true
-                console.log("spliced")
             } 
         }
     }
@@ -223,7 +222,6 @@ function sentenceAdd(id, check, array, current) {
 
 function speak() {
 
-    console.log(sentenceArray)
     const voices = window.speechSynthesis.getVoices();
     let message = utterance.join(" ")
     const lastVoice = voices[user.voice];
