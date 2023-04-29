@@ -53,9 +53,9 @@ function loadSettings() {
     } else {
         user = {
             home: 0,
-            voice: 51,
-            columns: 3,
-            rows: 3,
+            voice: 33,
+            columns: 2,
+            rows: 2,
             lock: false,
         }
         user.name = prompt("what is your name?")
@@ -92,7 +92,8 @@ function loadUser() {
         document.getElementById("lock-button").innerHTML = "unlock grid"
     }
     lastWord = user.home
-    document.getElementById("userName").innerText = `username : ${user.name}`
+    document.getElementById("userName").innerText = user.name
+    document.getElementById("homePage").innerText = data[user.home].text
     document.getElementById("rows-select").value = user.rows
     document.getElementById("columns-select").value = user.columns
     grid.style.gridTemplateRows = `repeat(${user.rows}, ${Math.round(1/user.rows*100)}%)`
@@ -171,13 +172,17 @@ function lockGrid() {
     if (user.lock == false) {
         document.getElementById("lock").style.visibility = "visible"
         document.getElementById("lock-button").innerHTML = "unlock grid"
+        if (typeof sentenceArray[sentenceArray.length-1] != "undefined") {
+            user.home = sentenceArray[sentenceArray.length-1]
+        }
     } else if (user.lock == true) {
         document.getElementById("lock").style.visibility = "hidden"
         document.getElementById("lock-button").innerHTML = "lock grid"
+        user.home = 0
     }
     user.lock = !user.lock
+    document.getElementById("homePage").innerText = `homepage : ${data[user.home].text}`
 }
-
 
 function sentenceAdd(id, check, array, current) {
 
@@ -234,6 +239,15 @@ function back() {
 
     current = sentenceArray[sentenceArray.length -1]
 
+    if (user.lock == true) {
+        if (utterance[utterance.length -1] == data[current].text) {
+            utterance.pop()
+            sentence.removeChild(sentence.lastChild)
+        } 
+        sentenceArray.pop()
+        return
+    }
+
     if (targetArray[utterance.length] == targetArray[wordPosition]) {
         if (utterance.length == 1) {
             wordPosition = 0
@@ -251,11 +265,6 @@ function back() {
         utterance.pop()
         sentence.removeChild(sentence.lastChild)
     } 
-
-    if (user.lock == true) {
-        return sentenceArray.pop()
-    }
-
     if (sentenceArray.length == 1) {
         if (sentenceNumber == 0) {
             loadGrid(user.home)
@@ -295,7 +304,7 @@ function searchKeyUp() {
     }
 
     let searchResults = [];
-    for (let p = 0; p < data.length; p++) {
+    for (let p = 1; p < data.length; p++) {
         if (data[p].text.toLowerCase().includes(document.getElementById('search-input').value)) {
             searchResults.push(p)
         } 
@@ -345,8 +354,12 @@ function wordCheck(id) {
         targetArray = targetObject[sentenceNumber]
         if (typeof targetArray == "undefined") {
             leaveFolder()
-            loadGrid[data[folder.array], -1]
-            return alert("nice! why not try the very hungry caterpillar next?")
+            loadGrid(user.home)
+            alert("nice! how about a larger grid?")
+            user.rows++
+            user.columns++
+            loadUser()
+            return 
         } else {
             targetArray = targetObject[sentenceNumber]
             nextWord = targetArray[wordPosition]
@@ -355,7 +368,6 @@ function wordCheck(id) {
     }
     loadGrid(id)
 }
-
 
 function targetSentence(id, check) {
 
@@ -409,8 +421,9 @@ function move() {
         return back()
     }
     if (typeof targetObject[sentenceNumber] == "undefined") {
-        return
-    } else if (sentenceNumber == 0) {
+        leaveFolder()
+        return back()
+        } else if (sentenceNumber == 0) {
         targetArray = targetObject[0]
         lastWord = folder
         nextWord = targetArray[0]
@@ -425,7 +438,7 @@ function move() {
 }
 
 function leaveFolder() {
-    example.innerHTML = ""
+
     wordPosition = 0
     sentenceNumber = 0
     nextWord = 0
@@ -433,6 +446,7 @@ function leaveFolder() {
     targetObject = {}
     document.getElementById("move-down").style.visibility = "hidden"
     document.getElementById("move-up").style.visibility = "hidden"
+    example.innerHTML = ""
     grid.style.backgroundColor = "lightGray"
     title.placeholder = "speak-easy"
     inFolder = false

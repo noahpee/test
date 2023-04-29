@@ -2,8 +2,7 @@ let data = {
     "words": [
     {
 "id":0,
-"text":"",
-"name": "defualt",
+"text":"default",
 "array": [809,224,673,274,485,504,445,66,728,729,187,48,521,302,491,21]
 },
     {
@@ -27,7 +26,7 @@ let data = {
 "id":4,
 "text": "are",
 "image": "https://firebasestorage.googleapis.com/v0/b/speak-easy-app-development.appspot.com/o/images%2F4.png?alt=media&token=9e1c6e1a-ea5d-4773-a260-dc894bdc82ad",
-"array": [518,274,170,25,386,116,503,89,298,194,1,437,231,319,250,435]
+"array": [518,272,170,25,386,116,503,89,298,194,1,437,231,319,250,435]
 },
     {
 "id":5,
@@ -1714,7 +1713,7 @@ let data = {
 "id":287,
 "text": "name",
 "image": "https://firebasestorage.googleapis.com/v0/b/speak-easy-app-development.appspot.com/o/images%2F287.png?alt=media&token=569f8bf8-84cc-4069-8600-9ead2a172590",
-"array": [226,485,312,161,225,12,298,89,449,437,493,186,116,273,274,394]
+"array": [485,312,161,225,12,298,89,226,449,437,493,186,116,273,274,394]
 },
     {
 "id":288,
@@ -4796,7 +4795,7 @@ let data = {
     {
 "id":809,
 "text": "introduction",
-"array": [768,769,770,771,772,773,776,777,778,779,780,781,782,783,784,785,786,787,788,789,790,791,792,793,794,795,796,797,798,799,800,801,802,803,804,805,806,807,808,810],
+"array": [4,226,103,66,492,495,187,493,74,420,101,433,271,504,244,394],
 "sub": {
         "questions": {
                 "0": [485, 226, 519, 287],
@@ -5209,7 +5208,6 @@ function populateVoiceList() {
         option.id = `vs${i}`
         document.getElementById("voiceSelect").appendChild(option);
     }
-    document.getElementById("homePage").innerText = `layout : ${data[user.home].name}`
 }
 
 function voiceChange() {
