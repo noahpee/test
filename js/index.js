@@ -25,6 +25,8 @@ let targetObject = {}
 
 let targetArray = []
 
+let targetStrings = []
+
 let ran = false
 
 let inFolder = false
@@ -57,6 +59,7 @@ function loadSettings() {
             columns: 2,
             rows: 2,
             lock: false,
+            speakAll: true,
         }
         user.name = prompt("what is your name?")
         let userString = JSON.stringify(user)
@@ -90,6 +93,11 @@ function loadUser() {
     if (user.lock == true) {
         document.getElementById("lock").style.visibility = "visible"
         document.getElementById("lock-button").innerHTML = "unlock grid"
+    }
+    if (user.speakAll == true) {
+        document.getElementById("speakAll").checked = "checked"
+    } else {
+        document.getElementById("speakNone").checked = "checked"
     }
     lastWord = user.home
     document.getElementById("userName").innerText = user.name
@@ -153,7 +161,6 @@ function loadGrid(id, check) {
         if (data[array[i]].sub) {
             tile.style.backgroundColor = "rgb(253, 238, 217)"
             tile.onclick = function tileClick() {
-                inFolder = true
                 sentenceAdd(this.id, -1, array, current,)
             }    
         }
@@ -181,7 +188,7 @@ function lockGrid() {
         user.home = 0
     }
     user.lock = !user.lock
-    document.getElementById("homePage").innerText = `homepage : ${data[user.home].text}`
+    document.getElementById("homePage").innerText = data[user.home].text
 }
 
 function sentenceAdd(id, check, array, current) {
@@ -208,27 +215,47 @@ function sentenceAdd(id, check, array, current) {
         tile.appendChild(tileText)
         sentence.scrollLeft = sentence.scrollWidth;
         utterance.push(data[id].text)
+        if (user.speakAll == true) {
+            speak(id)
+        }
     }
 
-    if (user.lock == true && check == -1) {
-        return loadGrid(id)
-    } else if (user.lock == true) {
-        return
-    }
+    setTimeout(() => {
+        if (user.lock == true && check == -1) {
+            return loadGrid(id)
+        } else if (user.lock == true) {
+            return
+        }
+        if (nextWord == id) {
+            wordPosition++
+            wordCheck(id)
+        } else {
+            orderCheck(array, current, id)
+            loadGrid(id)
+        }
+    }, 5);
 
-    if (nextWord == id) {
-        wordPosition++
-        wordCheck(id)
+}
+
+function toggleVoice() {
+    if(event.target.value == "none") {
+        user.speakAll = false
     } else {
-        orderCheck(array, current, id)
-        loadGrid(id)
+        user.speakAll = true
     }
 }
 
-function speak() {
+function speak(id) {
 
     const voices = window.speechSynthesis.getVoices();
-    let message = utterance.join(" ")
+    let message;
+    if (id == -1) {
+        message = "this is my voice"
+    } else if (event.target.id == "sentence-display") {
+        message = utterance.join(" ")
+    } else {
+        message = data[id].text
+    }
     const lastVoice = voices[user.voice];
     let speech = new SpeechSynthesisUtterance(message);
     speech.voice = lastVoice;
@@ -330,14 +357,15 @@ function folderCheck(id) {
         return
     }
     folder = id
-    title.placeholder = data[folder].text
+    title.placeholder = data[id].text
     if (!data[id].sub.questions) {
-        inFolder = false
         outFolder = true
     } else if (!data[id].sub.answers[0]) {
         targetSentence(id, -1)
+        inFolder = true
     } else {
         targetSentence(id, -2)
+        inFolder = true
     }
 }
 
@@ -354,11 +382,13 @@ function wordCheck(id) {
         targetArray = targetObject[sentenceNumber]
         if (typeof targetArray == "undefined") {
             leaveFolder()
+            if (folder == 809) {
+                user.rows++
+                user.columns++
+                alert("nice! how about a larger grid?")
+                loadUser()
+            }
             loadGrid(user.home)
-            alert("nice! how about a larger grid?")
-            user.rows++
-            user.columns++
-            loadUser()
             return 
         } else {
             targetArray = targetObject[sentenceNumber]

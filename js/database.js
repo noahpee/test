@@ -1354,7 +1354,7 @@ let data = {
 "id":226,
 "text": "is",
 "image": "https://firebasestorage.googleapis.com/v0/b/speak-easy-app-development.appspot.com/o/images%2F226.png?alt=media&token=b571a00d-15dd-4195-b63d-664c99f202e8",
-"array": [143,664,658,549,116,1,433,225,437,449,274,519,434,25,170,485]
+"array": [664,658,1,549,116,433,143,225,437,449,274,519,434,25,170,485]
 },
     {
 "id":227,
@@ -1635,7 +1635,7 @@ let data = {
 "id":274,
 "text": "my",
 "image": "https://firebasestorage.googleapis.com/v0/b/speak-easy-app-development.appspot.com/o/images%2F274.png?alt=media&token=8ec985ce-584b-40fd-b232-1438cbda18d0",
-"array": [748,667,139,41,287,224,275,107,166,424,22,263,212,301,322,143]
+"array": [667,139,41,287,224,275,748,107,166,424,22,263,212,301,322,143]
 },
     {
 "id":275,
@@ -5214,5 +5214,9 @@ function voiceChange() {
     
     let voiceSelect = document.getElementById("voiceSelect").value.split(" ")
     user.voice = parseInt(voiceSelect[voiceSelect.length-1])
+    speak(-1)
 }
 
+function closeDisplay() {
+    document.getElementById("popup").style.display = "none"
+}
