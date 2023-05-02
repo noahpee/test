@@ -4795,6 +4795,7 @@ let data = {
     {
 "id":809,
 "text": "introduction",
+"image": "https://firebasestorage.googleapis.com/v0/b/speak-easy-app-development.appspot.com/o/images%2F301.png?alt=media&token=03e3d6d1-cb50-4e5d-b91b-ece2f457af7f",
 "array": [4,226,103,66,492,495,187,493,74,420,101,433,271,504,244,394],
 "sub": {
         "questions": {
@@ -5086,7 +5087,7 @@ let data = {
     {
 "id":859,
 "text": "why & because",
-"array": [3428,204,28,231,233,526,315,158,220,435,291,254,17,27,274,394],
+"array": [328,204,28,231,233,526,315,158,220,435,291,254,17,27,274,394],
 "sub": {},
 },
     {
@@ -5217,6 +5218,3 @@ function voiceChange() {
     speak(-1)
 }
 
-function closeDisplay() {
-    document.getElementById("popup").style.display = "none"
-}

@@ -69,11 +69,14 @@
 </header>
 <div class="popup" id="popup">
     <div class="popup-content">
-      <span class="close-button" onclick="closeDisplay()">&times;</span>
-      <p>This is the content of the popup window.</p>
-      <input type="text" name="" id="" placeholder="name">
+        <span class="close-button" onclick="closeDisplay()">&times;</span>
+        <h1>welcome to speak-easy</h1>
+        <p>speak-easy is a predictive text-to-voice appication <br> simply click on the word you want to say and start speaking <br> or use the search to find what you are looking for.</p>
+        <p>first, enter your name and then have a look around. check the introduction folder for a feel of what you can do!</p>
+        <input type="text" name="userInput" id="userInput" class="userInput" placeholder="name">
+        <button onclick="closeDisplay()">lets go</button>
     </div>
-  </div>
+</div>
 <main>
     <div class="example-box">
         <button id="move-down" class="move-button" onclick="move()"><<</button>
@@ -94,6 +97,10 @@
     <p id="bottom-text"> © filler in manilla</p>
 </footer>
 </body>
-<script src="js/database.js"></script>
+<script type="module">
+    import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.esm.js'
+  </script>
+  <script src="js/database.js"></script>
 <script src="js/index.js"></script>
+
 </html>

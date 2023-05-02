@@ -219,16 +219,6 @@ main {
     height: 85%;
 }
 
-.popUp {
-    background-color: var(--tealPallete);
-    width: 75%;
-    height: 75%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
 .sentence-container {
     display: flex;
     align-items: center;
@@ -357,7 +347,7 @@ footer {
 }
 
 .popup {
-    display: block;
+    display: none;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -366,25 +356,36 @@ footer {
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
-  }
-  
-  .popup-content {
+}
+
+.popup-content {
     background-color: var(--tealPallete);
-    margin: 15% auto;
+    margin: 10% auto;
     padding: 20px;
-    width: 60%;
+    width: 55%;
+    height: 55%;
     position: relative;
-  }
-  
-  .close-button {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.close-button {
     position: absolute;
     top: 0;
     right: 15px;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-  }
-  
-  .close-button:hover {
+}
+
+.close-button:hover {
     color: var(--orangePallete);
-  }
+}
+
+.userInput {
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+}

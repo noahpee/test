@@ -27,6 +27,8 @@ let targetArray = []
 
 let targetStrings = []
 
+let questionArray = []
+
 let ran = false
 
 let inFolder = false
@@ -55,16 +57,15 @@ function loadSettings() {
     } else {
         user = {
             home: 0,
-            voice: 33,
+            voice: 51,
             columns: 2,
             rows: 2,
             lock: false,
             speakAll: true,
         }
-        user.name = prompt("what is your name?")
         let userString = JSON.stringify(user)
         localStorage.setItem("user", userString)
-        data.words[549].text = user.name
+        closeDisplay(-1)
         loadData()
         loadSettings()
     }
@@ -79,17 +80,19 @@ function loadSettings() {
     }
 }
 
-function save() {
+function save(check) {
 
     let stringify = JSON.stringify(data);
     let userString = JSON.stringify(user)
     localStorage.setItem("words", stringify);
     localStorage.setItem("user", userString)
-    alert("your settings have been saved")
+
+    if (check != -1) {
+        alert("your settings have been saved")
+    }
 }
 
 function loadUser() {
-
     if (user.lock == true) {
         document.getElementById("lock").style.visibility = "visible"
         document.getElementById("lock-button").innerHTML = "unlock grid"
@@ -106,6 +109,23 @@ function loadUser() {
     document.getElementById("columns-select").value = user.columns
     grid.style.gridTemplateRows = `repeat(${user.rows}, ${Math.round(1/user.rows*100)}%)`
     grid.style.gridTemplateColumns = `repeat(${user.columns}, ${Math.round(1/user.columns*100) -4}%)`
+}
+
+function closeDisplay(check) {
+
+    if (check == -1) {
+        document.getElementById("popup").style.display = "flex"
+        return
+    }
+    if (document.getElementById("userInput").value == "") {
+        return alert("name cant be empty")
+    } else {
+        user.name = document.getElementById("userInput").value
+        data[549].text = document.getElementById("userInput").value
+        save(-1)
+    }
+    document.getElementById("popup").style.display = "none"
+    loadSettings()
 }
 
 function loadGrid(id, check) {
@@ -141,7 +161,6 @@ function loadGrid(id, check) {
         if (!array[i]) {
             return
         }
-
         const tile = document.createElement("div")
         const tileImage = document.createElement("img")
         const tileText = document.createElement("p")
@@ -219,7 +238,6 @@ function sentenceAdd(id, check, array, current) {
             speak(id)
         }
     }
-
     setTimeout(() => {
         if (user.lock == true && check == -1) {
             return loadGrid(id)
@@ -251,6 +269,13 @@ function speak(id) {
     let message;
     if (id == -1) {
         message = "this is my voice"
+    } else  if (id == -2) {
+        message = targetStrings.join(" ")
+        const lastVoice = voices[33];
+        let speech = new SpeechSynthesisUtterance(message);
+        speech.voice = lastVoice;
+        window.speechSynthesis.speak(speech);
+        return
     } else if (event.target.id == "sentence-display") {
         message = utterance.join(" ")
     } else {
@@ -382,10 +407,13 @@ function wordCheck(id) {
         targetArray = targetObject[sentenceNumber]
         if (typeof targetArray == "undefined") {
             leaveFolder()
-            if (folder == 809) {
+            if (folder == 809 && user.rows == 2) {
                 user.rows++
                 user.columns++
                 alert("nice! how about a larger grid?")
+                data[user.home].array.shift()
+                data[user.home].array.unshift(190)
+                save(-1)
                 loadUser()
             }
             loadGrid(user.home)
@@ -412,6 +440,7 @@ function targetSentence(id, check) {
         targetArray = targetObject[sentenceNumber]
         nextWord = targetArray[wordPosition]
     }
+    
     for (let f = 0; f < data[folder].sub.questions[sentenceNumber].length; f++ ) {
 
         const tile = document.createElement("div")
@@ -427,11 +456,17 @@ function targetSentence(id, check) {
             tileImage.alt = data[data[id].sub.questions[sentenceNumber][f]].text
             tile.appendChild(tileImage)
         }
+        tile.onclick = function click() {
+            sayArray(data[folder].sub.questions[sentenceNumber])
+        }
         example.appendChild(tile)
         tile.appendChild(tileText)
     }
     document.getElementById("move-down").style.visibility = "visible"
     document.getElementById("move-up").style.visibility = "visible"
+    setTimeout(() => {
+        sayArray(data[folder].sub.questions[sentenceNumber])
+    }, 300)
 }
 
 function move() {
@@ -480,4 +515,13 @@ function leaveFolder() {
     grid.style.backgroundColor = "lightGray"
     title.placeholder = "speak-easy"
     inFolder = false
+}
+
+function sayArray(array) {
+
+    targetStrings = []
+    for (let i = 0; i < array.length; i++ ) {
+        targetStrings.push(data[array[i]].text)
+    }
+    speak(-2)
 }
